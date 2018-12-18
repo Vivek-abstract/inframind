@@ -26,7 +26,8 @@
                     </div>
 
                     <div class="signin-form">
-                        <h2 class="form-title">Here are the list of people interested</h2>
+                        <h2>Here is the list of people interested</h2>
+                        <h3>Count: <?= count($users) ?></h3>
                         <ul>
                             <?php
                                 foreach ($users as $user) {
