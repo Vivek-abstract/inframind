@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,21 +26,16 @@
                     </div>
 
                     <div class="signin-form">
-                        <h2 class="form-title">Here are the Details You entered :</h2>
-                        <form method="POST" class="register-form" id="login-form">
-                            <div class="form-group">
-                                Welcome <?php echo $_POST["name"]; ?><br>
-                            </div>
-                            <div class="form-group">
-                                Your email address is: <?php echo $_POST["email"]; ?>    
-                            </div>
-                            <div class="form-group">
-                            </div>
-                            <div class="form-group form-button">
-                            </div>
-                        </form>
-                        <div class="social-login">
-                        </div>
+                        <h2 class="form-title">Here are the list of people interested</h2>
+                        <ul>
+                            <?php
+                                foreach ($users as $user) {
+                                    echo "<h3>". $user['name']. "</h3>";
+                                    echo "<p>". $user['email']. "</p>";
+
+                                }
+                            ?>
+                        </ul>
                     </div>
                 </div>
             </div>
