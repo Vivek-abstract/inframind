@@ -7,7 +7,7 @@ ec2_client = boto3.client('ec2')
 
 
 def get_database_ip(stackName):
-    """Returns IP Address of Database server"""
+    """Returns Private IP Address of Database server"""
 
     custom = [
         {
@@ -23,7 +23,7 @@ def get_database_ip(stackName):
     reservation = ec2_client.describe_instances(
         Filters=custom).get('Reservations')
 
-    return reservation[0]['Instances'][0]['PublicIpAddress']
+    return reservation[0]['Instances'][0]['PrivateIpAddress']
 
 
 def get_ws1_ip(stackName):

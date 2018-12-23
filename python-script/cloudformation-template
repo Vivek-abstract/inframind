@@ -63,8 +63,16 @@
                 "ImageId": "ami-00d43a024f6bbf25f",
                 "InstanceType": "t2.micro",
                 "KeyName": "inframindwebserver",
-                "SecurityGroups": [
-                    "web-server"
+                "NetworkInterfaces": [
+                     {
+                        "AssociatePublicIpAddress": "true",
+                        "DeviceIndex": "0",
+                        "DeleteOnTermination": true,
+                        "GroupSet": [
+                            "sg-051a3e91cd2a7187a"
+                        ],
+                        "SubnetId": "subnet-01d4ba658c0ef4b04"
+                    } 
                 ],
                 "AvailabilityZone": "us-east-2a",
                 "Tags": [
@@ -86,8 +94,16 @@
                 "ImageId": "ami-00d43a024f6bbf25f",
                 "InstanceType": "t2.micro",
                 "KeyName": "inframindwebserver",
-                "SecurityGroups": [
-                    "web-server"
+                "NetworkInterfaces": [
+                     {
+                        "AssociatePublicIpAddress": "true",
+                        "DeviceIndex": "0",
+                        "DeleteOnTermination": true,
+                        "GroupSet": [
+                            "sg-051a3e91cd2a7187a"
+                        ],
+                        "SubnetId": "subnet-01d4ba658c0ef4b04"
+                    } 
                 ],
                 "AvailabilityZone": "us-east-2a",
                 "Tags": [
@@ -109,9 +125,10 @@
                 "ImageId": "ami-090094ac2268108b7",
                 "InstanceType": "t2.micro",
                 "KeyName": "inframindwebserver",
-                "SecurityGroups": [
-                    "database-server"
+                "SecurityGroupIds": [
+                    "sg-031ac945a7d1f7ed7"
                 ],
+                "SubnetId": "subnet-0086ce81600fc6bbb",
                 "AvailabilityZone": "us-east-2a",
                 "Tags": [
                     {
@@ -145,11 +162,11 @@
                     }    
                 ],
                 "SecurityGroups": [
-                    "sg-09b5e27c17d9c4c8a"    
+                    "sg-051a3e91cd2a7187a" 
                 ],
-                "AvailabilityZones": [
-                    "us-east-2a"
-                ]
+                "Subnets": [
+                    "subnet-01d4ba658c0ef4b04"
+                ],
             },
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
