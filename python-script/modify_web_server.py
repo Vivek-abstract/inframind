@@ -46,7 +46,7 @@ def get_ws1_ip(stackName):
     return reservation[0]['Instances'][0]['PublicIpAddress']
 
 def get_ws2_ip(stackName):
-    """Returns IP Address of Web Server 1"""
+    """Returns IP Address of Web Server 2"""
 
     custom = [
         {
@@ -63,6 +63,17 @@ def get_ws2_ip(stackName):
         Filters=custom).get('Reservations')
 
     return reservation[0]['Instances'][0]['PublicIpAddress']
+
+def get_elb_dns_name(stackName):
+    client = boto3.client('cloudformation')
+
+    resource = client.describe_stack_resource(StackName=stackName, LogicalResourceId='LoadBalancer')
+    physical_address = resource['StackResourceDetail']['PhysicalResourceId']
+
+    elb_client = boto3.client('elb')
+    elb = elb_client.describe_load_balancers(LoadBalancerNames=[physical_address])
+    
+    return elb['LoadBalancerDescriptions'][0]['DNSName']
 
 def modify(stackName):
     """Modify the connect.inc.php in the two web servers in the given stack"""
@@ -104,7 +115,7 @@ def modify(stackName):
     print("File Copied to Web Server 1")
 
     # Web server 2
-    print("Copying File to Web Server 1")
+    print("Copying File to Web Server 2")
 
     ssh.connect(webserver2_ip, username='ubuntu',
                 key_filename='../../../.ssh/inframindwebserver.pem')
@@ -114,4 +125,8 @@ def modify(stackName):
 
     ssh.close()
 
-    print("File Copied to Web Server 1")
+    print("File Copied to Web Server 2")
+
+    print("Fetching DNS name....")
+    dns_name = get_elb_dns_name(stackName)
+    print("Your Application is live at {}".format(dns_name))

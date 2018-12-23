@@ -60,7 +60,7 @@
         "WebServer1": {
             "Type": "AWS::EC2::Instance",
             "Properties": {
-                "ImageId": "ami-0209fbb7cf12f9a45",
+                "ImageId": "ami-00d43a024f6bbf25f",
                 "InstanceType": "t2.micro",
                 "KeyName": "inframindwebserver",
                 "SecurityGroups": [
@@ -83,7 +83,7 @@
         "WebServer2": {
             "Type": "AWS::EC2::Instance",
             "Properties": {
-                "ImageId": "ami-0209fbb7cf12f9a45",
+                "ImageId": "ami-00d43a024f6bbf25f",
                 "InstanceType": "t2.micro",
                 "KeyName": "inframindwebserver",
                 "SecurityGroups": [
