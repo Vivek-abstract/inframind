@@ -1,0 +1,161 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Metadata": {
+        "AWS::CloudFormation::Designer": {
+            "888dfbe4-a7d0-4c05-99bd-55d1278dc5b5": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 230,
+                    "y": 70
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "7d4f27cf-d1a9-4af3-a465-ebd64562fb2a": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 230,
+                    "y": 150
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "9a2e0f88-28a9-4838-8b22-6c08fb486a80": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 340,
+                    "y": 100
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "01775c10-127f-45e1-b230-52259b8f5e4a": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 90,
+                    "y": 100
+                },
+                "z": 0,
+                "embeds": [],
+                "isassociatedwith": [
+                    "888dfbe4-a7d0-4c05-99bd-55d1278dc5b5",
+                    "7d4f27cf-d1a9-4af3-a465-ebd64562fb2a"
+                ]
+            }
+        }
+    },
+    "Resources": {
+        "WebServer1": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "ImageId": "ami-00d43a024f6bbf25f",
+                "InstanceType": "t2.micro",
+                "KeyName": "inframindwebserver",
+                "SecurityGroups": [
+                    "web-server"
+                ],
+                "AvailabilityZone": "us-east-2a",
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "Web Server 1"
+                    }
+                ]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "888dfbe4-a7d0-4c05-99bd-55d1278dc5b5"
+                }
+            }
+        },
+        "WebServer2": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "ImageId": "ami-00d43a024f6bbf25f",
+                "InstanceType": "t2.micro",
+                "KeyName": "inframindwebserver",
+                "SecurityGroups": [
+                    "web-server"
+                ],
+                "AvailabilityZone": "us-east-2a",
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "Web Server 2"
+                    }
+                ]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "7d4f27cf-d1a9-4af3-a465-ebd64562fb2a"
+                }
+            }
+        },
+        "DatabaseServer": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "ImageId": "ami-090094ac2268108b7",
+                "InstanceType": "t2.micro",
+                "KeyName": "inframindwebserver",
+                "SecurityGroups": [
+                    "database-server"
+                ],
+                "AvailabilityZone": "us-east-2a",
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "Database Server"
+                    }
+                ]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "9a2e0f88-28a9-4838-8b22-6c08fb486a80"
+                }
+            }
+        },
+        "LoadBalancer": {
+            "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
+            "Properties": {
+                "Instances": [
+                    {
+                        "Ref": "WebServer1"
+                    },
+                    {
+                        "Ref": "WebServer2"
+                    }
+                ],
+                "Listeners": [
+                    {
+                        "LoadBalancerPort": "80",
+                        "InstancePort": "80",
+                        "Protocol": "HTTP"
+                    }    
+                ],
+                "SecurityGroups": [
+                    "sg-09b5e27c17d9c4c8a"    
+                ],
+                "AvailabilityZones": [
+                    "us-east-2a"
+                ]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "01775c10-127f-45e1-b230-52259b8f5e4a"
+                }
+            }
+        }
+    }
+}
