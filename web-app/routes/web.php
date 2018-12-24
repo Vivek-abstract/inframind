@@ -6,6 +6,8 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/launch', function () {
-    return view('launch');
-});
+Route::get('/launch/create', "LaunchRequestController@create");
+
+Route::post('/launch', 'LaunchRequestController@store');
+
+Route::get('/launch', 'LaunchRequestController@index');

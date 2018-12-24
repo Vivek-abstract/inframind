@@ -27,4 +27,13 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function isAdmin()
+    {
+        return $this->email == 'vivek040997@gmail.com';
+    }
+
+    public function launchRequests() {
+        return $this->hasMany(LaunchRequest::class);
+    }
 }
