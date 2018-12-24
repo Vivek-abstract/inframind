@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top blackNav" id="mainNav">
     <div class="container">
-        <a class="navbar-brand" href="/">Vivek's Blog</a>
+        <a class="navbar-brand" href="/">TIS</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive"
             aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         Menu
