@@ -20,10 +20,13 @@ print("Stack Create Request sent")
 waiter = client.get_waiter('stack_create_complete')
 print("Waiter created")
 
-print("Waiting...")
+print("Waiting... [Estimated time: 1 min]")
 
 waiter.wait(
     StackName=stackName,
+    WaiterConfig={
+        'Delay': 20,
+    }
 )
 
 print("Stack created successfully")

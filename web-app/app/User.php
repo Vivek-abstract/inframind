@@ -2,9 +2,8 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -33,7 +32,8 @@ class User extends Authenticatable
         return $this->email == 'vivek040997@gmail.com';
     }
 
-    public function launchRequests() {
+    public function launchRequests()
+    {
         return $this->hasMany(LaunchRequest::class);
     }
 
@@ -47,15 +47,12 @@ class User extends Authenticatable
         $live_output = "";
         $complete_output = "";
 
-        echo '<pre>';
-
         while (!feof($proc)) {
-            $live_output = fread($proc, 4096);
+            $live_output = ltrim(fread($proc, 4096));
             $complete_output = $complete_output . $live_output;
-            echo "$live_output";
+            echo $live_output;
             @flush();
         }
-        echo '</pre>';
 
         pclose($proc);
 
@@ -65,7 +62,57 @@ class User extends Authenticatable
         // return exit status and intended output
         return array(
             'exit_status' => intval($matches[0]),
-            'output' => str_replace("Exit status : " . $matches[0], '', $complete_output),
+            'output' => trim(str_replace("Exit status : " . $matches[0], '', $complete_output)),
         );
     }
+
+    public function runScriptAndShowOutput($launchRequest)
+    {
+        $result = $this->liveExecuteCommand("cd ../../python-script && python3 -u main.py");
+
+        if ($result['exit_status'] === 0) {
+            $output = $result['output'];
+
+            $databaseIP = '';
+            $webServerIp1 = '';
+            $webServerIp2 = '';
+            $dnsName = '';
+
+            foreach (preg_split("/((\r?\n)|(\r\n?))/", $output) as $line) {
+                if (strpos($line, 'Database Server IP') !== false) {
+                    $line = preg_replace('/\s+/', '', $line);
+                    $databaseIP = explode(':', $line)[1];
+                } else if (strpos($line, 'Web Server 1 IP') !== false) {
+                    $line = preg_replace('/\s+/', '', $line);
+                    $webServerIp1 = explode(':', $line)[1];
+                } else if (strpos($line, 'Web Server 2 IP') !== false) {
+                    $line = preg_replace('/\s+/', '', $line);
+                    $webServerIp2 = explode(':', $line)[1];
+                } else if (strpos($line, 'Your Application is live') !== false) {
+                    $line = trim($line);
+                    $dnsName = explode(" ", $line)[5];
+                }
+            }
+
+            $launchRequest->update([
+                'database_ip' => $databaseIP,
+                'ws1_ip' => $webServerIp1,
+                'ws2_ip' => $webServerIp2,
+                'dns_name' => $dnsName,
+                'output' => $output,
+                'status' => 'Success',
+            ]);
+
+            return "Success";
+        } else {
+            // Rollback the stack
+
+            $launchRequest->update([
+                'status' => 'Failed',
+            ]);
+            
+            return "The script failed to execute";
+        }
+    }
+
 }

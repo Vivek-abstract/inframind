@@ -19,6 +19,12 @@ class CreateLaunchRequestsTable extends Migration
             $table->string('company_name', 50);
             $table->string('requester', 50);
             $table->string('contact', 20);
+            $table->string('database_ip', 20)->nullable();
+            $table->string('ws1_ip', 20)->nullable();
+            $table->string('ws2_ip', 20)->nullable();
+            $table->string('dns_name', 150)->nullable();
+            $table->text('output')->nullable();
+            $table->string('status', 10)->nullable();
             $table->timestamps();
         });
     }

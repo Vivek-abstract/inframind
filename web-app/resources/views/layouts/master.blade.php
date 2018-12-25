@@ -24,6 +24,8 @@
 
   <!-- Custom styles for this template -->
   <link href="/css/app.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="/css/prism.css">
+  <script src="/js/prism.js"></script>
 
   <script src="/js/app.js"></script>
 </head>
