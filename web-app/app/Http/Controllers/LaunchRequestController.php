@@ -15,7 +15,12 @@ class LaunchRequestController extends Controller
 
     public function index()
     {
-        return view('launch.index');
+        if (auth()->user()->isAdmin()) {
+            $launchRequests = LaunchRequest::all();
+        } else {
+            $launchRequests = LaunchRequest::where('user_id', auth()->id())->get();
+        }
+        return view('launch.index', compact('launchRequests'));
     }
 
     public function create()
@@ -41,8 +46,10 @@ class LaunchRequestController extends Controller
         return view('launch.show', compact('launchRequest'));
     }
 
-    public function destroy(LaunchRequest $launchRequest) { 
+    public function destroy(LaunchRequest $launchRequest)
+    {
         shell_exec("cd ../../python-script && python3 delete-stack.py $launchRequest->stack_name");
+        $launchRequest->delete();
         return redirect('/launch')->with('message', 'App Deleted Successfully');
     }
 }

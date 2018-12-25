@@ -15,16 +15,22 @@
                         <th>Status</th>
                     </thead>
                     <tbody>
+                        @foreach ($launchRequests as $launchRequest)
                         <tr>
-                            <td>Mohsin</td>
-                            <td>Irshad</td>
-                            <td>7039715240</td>
-                            <td><a href="/launch" class="link">Check Status</a></td>
+                            <td>{{ $launchRequest->stack_name }}</td>
+                            <td>{{ $launchRequest->requester }}</td>
+                            <td>{{ $launchRequest->contact }}</td>
+                            <td><a href="/launch/{{ $launchRequest->id }}" class="link">Check Status</a></td>
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
+            <div class="text-center">
+                <a href='/launch/create' class="btn btn-primary text-center">Launch New App</a>
+            </div>
         </div>
+
     </div>
 </div>
 @endsection

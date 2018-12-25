@@ -24,7 +24,10 @@
                           {{ Auth::user()->name }}
                         </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/logout">Logout</a>
+                        <form action="/logout" method="post">
+                            @csrf
+                            <button class="dropdown-item">Logout</a>
+                        </form>
                     </div>
                 </li>
 
@@ -32,6 +35,9 @@
 
                 <li class="nav-item">
                     <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">Register</a>
                 </li>
 
                 @endif
