@@ -2,6 +2,7 @@ from paramiko import SSHClient, AutoAddPolicy
 from scp import SCPClient
 import boto3
 import fileinput
+import getpass
 
 ec2_client = boto3.client('ec2')
 
@@ -78,6 +79,8 @@ def get_elb_dns_name(stackName):
 def modify(stackName):
     """Modify the connect.inc.php in the two web servers in the given stack"""
 
+    username = getpass.getuser()
+
     print("Fetching IP Addresses")
 
     database_server_ip = get_database_ip(stackName)
@@ -103,8 +106,9 @@ def modify(stackName):
     ssh = SSHClient()
     ssh.set_missing_host_key_policy(AutoAddPolicy()) 
     ssh.load_system_host_keys()
+    key_path= "/home/" + username + "/.ssh/inframindwebserver.pem"
     ssh.connect(webserver1_ip, username='ubuntu',
-                key_filename='../../../.ssh/inframindwebserver.pem')
+                key_filename=key_path)
 
     scp = SCPClient(ssh.get_transport())
     scp.put('../synergy/includes/connect.inc.php',
@@ -118,7 +122,7 @@ def modify(stackName):
     print("Copying File to Web Server 2")
 
     ssh.connect(webserver2_ip, username='ubuntu',
-                key_filename='../../../.ssh/inframindwebserver.pem')
+                key_filename=key_path)
     scp = SCPClient(ssh.get_transport())
     scp.put('../synergy/includes/connect.inc.php',
             '/var/www/html/inframind/synergy/includes')
