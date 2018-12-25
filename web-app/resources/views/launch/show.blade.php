@@ -14,7 +14,20 @@
                     @else {{ auth()->user()->runScriptAndShowOutput($launchRequest) }}
                     @endif</code></pre>
 
-            <h2>Status: <span class="green">{{$launchRequest->status}}</span></h2>
+            <h4>Status: <span class="green">{{$launchRequest->status}}</span></h4>
+
+            @if($launchRequest->status === 'Success')
+            <h4>Web Server 1 IP: <span class="text-info">{{$launchRequest->ws1_ip}}</span></h4>
+            <h4>Web Server 2 IP: <span class="text-info">{{$launchRequest->ws2_ip}}</span></h4>
+            <h4>Database Server Private IP: <span class="text-info">{{$launchRequest->database_ip}}</span></h4>
+            <div class="row mt-4 mb-5 ml-1">
+                <a href="http://{{$launchRequest->dns_name}}" class="btn btn-success" target="_blank">View Application</a>
+                <form action="/launch/{{$launchRequest->id}}" method='POST'>
+                    @method('DELETE') @csrf
+                    <button type="submit" class="btn btn-danger ml-4">Delete Application</button>
+                </form>
+            </div>
+            @endif
         </div>
     </div>
 </div>

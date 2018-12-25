@@ -23,6 +23,7 @@ class CreateLaunchRequestsTable extends Migration
             $table->string('ws1_ip', 20)->nullable();
             $table->string('ws2_ip', 20)->nullable();
             $table->string('dns_name', 150)->nullable();
+            $table->string('stack_name', 20)->nullable();
             $table->text('output')->nullable();
             $table->string('status', 10)->nullable();
             $table->timestamps();

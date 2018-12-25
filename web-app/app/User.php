@@ -69,6 +69,7 @@ class User extends Authenticatable
     public function runScriptAndShowOutput($launchRequest)
     {
         $result = $this->liveExecuteCommand("cd ../../python-script && python3 -u main.py");
+        $stackName = '';
 
         if ($result['exit_status'] === 0) {
             $output = $result['output'];
@@ -78,8 +79,13 @@ class User extends Authenticatable
             $webServerIp2 = '';
             $dnsName = '';
 
+            // Iterate output line by line
             foreach (preg_split("/((\r?\n)|(\r\n?))/", $output) as $line) {
-                if (strpos($line, 'Database Server IP') !== false) {
+                if (strpos($line, 'Sending request to create stack') !== false) {
+                    // Remove all whitespaces and split by :
+                    $line = preg_replace('/\s+/', '', $line);
+                    $stackName = explode(':', $line)[1];
+                } else if (strpos($line, 'Database Server IP') !== false) {
                     $line = preg_replace('/\s+/', '', $line);
                     $databaseIP = explode(':', $line)[1];
                 } else if (strpos($line, 'Web Server 1 IP') !== false) {
@@ -101,6 +107,7 @@ class User extends Authenticatable
                 'dns_name' => $dnsName,
                 'output' => $output,
                 'status' => 'Success',
+                'stack_name' => $stackName
             ]);
 
             return "Success";
@@ -110,7 +117,18 @@ class User extends Authenticatable
             $launchRequest->update([
                 'status' => 'Failed',
             ]);
-            
+
+            foreach (preg_split("/((\r?\n)|(\r\n?))/", $output) as $line) {
+                if (strpost($line, 'Sending request to create stack') !== false) {
+                    // Remove all whitespaces and split by :
+                    $line = preg_replace('/\s+/', '', $line);
+                    $stackName = explode(':', $line)[1];
+                    break;
+                }
+            }
+
+            $result = $this->liveExecuteCommand("cd ../../python-script && python3 delete_stack.py $stackName");
+
             return "The script failed to execute";
         }
     }

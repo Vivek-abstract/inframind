@@ -19,7 +19,7 @@
                             <td>Mohsin</td>
                             <td>Irshad</td>
                             <td>7039715240</td>
-                            <td><a href="/launch/{{$launchRequest->id()}}" class="link">Check Status</a></td>
+                            <td><a href="/launch" class="link">Check Status</a></td>
                         </tr>
                     </tbody>
                 </table>

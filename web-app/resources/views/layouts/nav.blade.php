@@ -14,21 +14,16 @@
 
                 @if(auth()->check())
 
+                <li class="nav-item">
+                    <a class="nav-link" href="/launch">Launch Requests</a>
+                </li>
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
                           {{ Auth::user()->name }}
                         </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/posts/create">Create Post</a>
-    
-                        @if (auth()->user()->isAdmin())
-                            <a class="dropdown-item" href="/verify">Activate Posts</a>
-
-                            @if (Request::is('posts/*'))
-                                <a class="dropdown-item" href="/posts/{{$post->url_title}}/edit">Edit Post</a>
-                            @endif
-                        @endif
                         <form action="/logout" method="post">
                             @csrf
                             <button class="dropdown-item">Logout</a>
