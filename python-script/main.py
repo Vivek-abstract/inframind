@@ -6,7 +6,7 @@ client = boto3.client('cloudformation')
 
 stackName = "inframind" + str(random.randint(0, 10000))
 
-templateURL = "https://s3.us-east-2.amazonaws.com/cf-templates-1lfybsm6ut9us-us-east-2/2018357poR-cloudformation-template"
+templateURL = "https://s3.us-east-2.amazonaws.com/cf-templates-1lfybsm6ut9us-us-east-2/2018360diX-cloudformation-template"
 
 print("Sending request to create stack: {}".format(stackName))
 client.create_stack(
