@@ -66,6 +66,8 @@ def get_ws2_ip(stackName):
     return reservation[0]['Instances'][0]['PublicIpAddress']
 
 def get_elb_dns_name(stackName):
+    """Returns the DNS Name of Load Balancer"""
+    
     client = boto3.client('cloudformation')
 
     resource = client.describe_stack_resource(StackName=stackName, LogicalResourceId='LoadBalancer')
@@ -76,10 +78,27 @@ def get_elb_dns_name(stackName):
     
     return elb['LoadBalancerDescriptions'][0]['DNSName']
 
+def copy_file_to_webserver(ip):
+    """Copy the connect.inc.php file to the web server with IP address = ip"""
+    ssh = SSHClient()
+    username = getpass.getuser()
+
+    ssh.set_missing_host_key_policy(AutoAddPolicy()) 
+    ssh.load_system_host_keys()
+
+    key_path= "/home/" + username + "/.ssh/inframindwebserver.pem"
+
+    ssh.connect(ip, username='ubuntu', key_filename=key_path)
+
+    scp = SCPClient(ssh.get_transport())
+    scp.put('../synergy/includes/connect.inc.php',
+            '/var/www/html/inframind/synergy/includes')
+
+    ssh.close()
+
+
 def modify(stackName):
     """Modify the connect.inc.php in the two web servers in the given stack"""
-
-    username = getpass.getuser()
 
     print("Fetching IP Addresses")
 
@@ -100,34 +119,16 @@ def modify(stackName):
 
     print("New Connect.inc.php file created")
 
-    # Copy this file and paste in web server 1
     print("Copying File to Web Server 1")
 
-    ssh = SSHClient()
-    ssh.set_missing_host_key_policy(AutoAddPolicy()) 
-    ssh.load_system_host_keys()
-    key_path= "/home/" + username + "/.ssh/inframindwebserver.pem"
-    ssh.connect(webserver1_ip, username='ubuntu',
-                key_filename=key_path)
-
-    scp = SCPClient(ssh.get_transport())
-    scp.put('../synergy/includes/connect.inc.php',
-            '/var/www/html/inframind/synergy/includes')
-
-    ssh.close()
+    
+    copy_file_to_webserver(webserver1_ip)
 
     print("File Copied to Web Server 1")
 
-    # Web server 2
     print("Copying File to Web Server 2")
 
-    ssh.connect(webserver2_ip, username='ubuntu',
-                key_filename=key_path)
-    scp = SCPClient(ssh.get_transport())
-    scp.put('../synergy/includes/connect.inc.php',
-            '/var/www/html/inframind/synergy/includes')
-
-    ssh.close()
+    copy_file_to_webserver(webserver2_ip)
 
     print("File Copied to Web Server 2")
 
