@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\LaunchRequest;
 use Illuminate\Http\Request;
+use App\Mail\LaunchRequestCreated;
 
 class LaunchRequestController extends Controller
 {
@@ -37,6 +38,9 @@ class LaunchRequestController extends Controller
         ]);
 
         $launchRequest = auth()->user()->launchRequests()->create($validatedData);
+
+
+        \Mail::to('vivekbgawande@gmail.com')->send(new LaunchRequestCreated($validatedData));
 
         return redirect("/launch/$launchRequest->id")->with('message', 'Launch Request Created Successfully');
     }

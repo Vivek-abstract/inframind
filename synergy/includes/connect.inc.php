@@ -1,6 +1,6 @@
 <?php
 
-$servername = "10.0.1.30";
+$servername = "10.0.1.32";
 $username = "groot";
 $password = "groot";
 $dbname = 'synergy';

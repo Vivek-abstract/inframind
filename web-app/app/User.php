@@ -29,7 +29,7 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this->email == 'vivek040997@gmail.com';
+        return $this->email == 'vivekbgawande@gmail.com';
     }
 
     public function launchRequests()
