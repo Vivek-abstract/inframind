@@ -5,9 +5,8 @@ from modify_web_server import modify
 client = boto3.client('cloudformation')
 
 stackName = "inframind" + str(random.randint(0, 10000))
-template = open('cloudformation-template', 'r')
 
-templateURL = "https://s3.us-east-2.amazonaws.com/cf-templates-1lfybsm6ut9us-us-east-2/2018357poR-cloudformation-template"
+templateURL = "https://s3.us-east-2.amazonaws.com/cf-templates-1lfybsm6ut9us-us-east-2/2018360diX-cloudformation-template"
 
 print("Sending request to create stack: {}".format(stackName))
 client.create_stack(
@@ -21,10 +20,13 @@ print("Stack Create Request sent")
 waiter = client.get_waiter('stack_create_complete')
 print("Waiter created")
 
-print("Waiting...")
+print("Waiting... [Estimated time: 1 min]")
 
 waiter.wait(
     StackName=stackName,
+    WaiterConfig={
+        'Delay': 20,
+    }
 )
 
 print("Stack created successfully")
